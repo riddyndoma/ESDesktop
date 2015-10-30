@@ -7,6 +7,7 @@ package gui;
 
 import beans.JUtils;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -39,6 +41,7 @@ public class BailleursView extends javax.swing.JPanel {
         createModel();
         fillDataValuesInTable();
         initComponents();
+        onButtonBehavior();
         scrll.getViewport().setBackground(Color.WHITE);
         scrll.setViewportView(myTable);
     }
@@ -324,6 +327,19 @@ public class BailleursView extends javax.swing.JPanel {
         clearTable();
         fillDataValuesInTable();
     }//GEN-LAST:event_bSaveActionPerformed
+
+    private void onButtonBehavior() {
+        Timer temps = new Timer(20, (ActionEvent e) -> {
+            if (txtCode.getText().equals("")
+                    || txtNom.getText().equals("")
+                    || txtAdresse.getText().equals("")) {
+                bSave.setEnabled(false);
+            } else {
+                bSave.setEnabled(true);
+            }
+        });
+        temps.start();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,17 +5,160 @@
  */
 package gui;
 
+import beans.JUtils;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import org.jdesktop.swingx.JXTable;
+
 /**
  *
  * @author Dell
  */
 public class BailleursView extends javax.swing.JPanel {
 
+    static JXTable myTable;
+
     /**
      * Creates new form BailleursView
      */
     public BailleursView() {
+        createModel();
         initComponents();
+        scrll.getViewport().setBackground(Color.WHITE);
+        scrll.setViewportView(myTable);
+    }
+
+    private void createModel() {
+        myTable = new JXTable(new MyModelTable(1));
+        myTable.getTableHeader().setReorderingAllowed(false);
+        myTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        myTable.setShowGrid(false);
+        myTable.getColumnModel().getColumn(0).setMinWidth(100);
+        myTable.getColumnModel().getColumn(0).setMaxWidth(100);
+        myTable.getColumnModel().getColumn(1).setMinWidth(100);
+        myTable.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseReleased(MouseEvent evt) {
+                if (evt.isPopupTrigger()) {
+//                    pop.show(table, evt.getX(), evt.getY());
+                }
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+//                    if (!myTable.getValueAt(myTable.getSelectedRow(), 1).toString().equals("")) {
+//                        bEdit.setEnabled(true);
+//                        bDelete.setEnabled(true);
+//                        txtID.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
+//                        txtDistrict.setText(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
+//                        cbProvince.setSelectedItem(myTable.getValueAt(myTable.getSelectedRow(), 2).toString());
+//                        testUpdate = true;
+//                        ID_UPDATE = myTable.getValueAt(myTable.getSelectedRow(), 0).toString();
+//                    } else {
+//                        bEdit.setEnabled(false);
+//                        bDelete.setEnabled(false);
+//                        testUpdate = false;
+//                    }
+                } catch (Exception ex) {
+                }
+            }
+        });
+        TableCellRenderer headerRenderer = myTable.getTableHeader().getDefaultRenderer();
+        ((DefaultTableCellRenderer) headerRenderer).setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+    }
+
+    public class MyModelTable extends AbstractTableModel {
+
+        private String[] columnNames = {
+            JUtils.setBlackColor("CODE"), JUtils.setBlackColor("NOM")};
+        private ArrayList[] Data;
+
+        public MyModelTable(int taille) {
+
+            Data = new ArrayList[columnNames.length];
+            for (int i = 0; i < columnNames.length; i++) {
+                Data[i] = new ArrayList();
+
+            }
+            for (int i = 0; i < columnNames.length; i++) {
+                for (int j = 0; j < taille; j++) {
+                    Data[i].add(j, "");
+
+                }
+            }
+        }
+
+        @Override
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        @Override
+        public int getRowCount() {
+            return Data[0].size();
+        }
+
+        @Override
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        @Override
+        public Object getValueAt(int row, int col) {
+            return Data[col].get(row);
+        }
+
+        @Override
+        public Class getColumnClass(int c) {
+            return getValueAt(0, c).getClass();
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int col) {
+            return (true);
+        }
+
+        @Override
+        public void setValueAt(Object value, int row, int col) {
+            Data[col].set(row, value);
+            fireTableCellUpdated(row, col);
+        }
+
+        public void addNewRow() {
+            for (int i = 0; i < columnNames.length; i++) {
+                Data[i].add(Data[i].size(), "");
+            }
+            this.fireTableRowsInserted(0, Data[0].size() - 1);
+        }
+
+        public void removeNewRow(int index) {
+            if (getRowCount() == 0 || index < 0) {
+                return;
+            }
+            for (int i = 0; i < 1; i++) {
+                Data[i].remove(index);
+            }
+            for (int i = 1; i < columnNames.length; i++) {
+                Data[i].remove(index);
+            }
+            this.fireTableRowsDeleted(0, Data[0].size() - 1);
+        }
+
+        public void removeNewRow() {
+            for (int i = 0; i < columnNames.length; i++) {
+                Data[i].remove(Data[i].size() - 1);
+            }
+            this.fireTableRowsDeleted(0, Data[0].size() - 1);
+        }
     }
 
     /**
@@ -35,9 +178,8 @@ public class BailleursView extends javax.swing.JPanel {
         txtNom = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
+        scrll = new javax.swing.JScrollPane();
 
         setBackground(java.awt.Color.white);
 
@@ -83,19 +225,6 @@ public class BailleursView extends javax.swing.JPanel {
         jButton2.setBackground(java.awt.Color.white);
         jButton2.setText("Annuler");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "CODE", "NOM"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         jButton3.setBackground(java.awt.Color.white);
         jButton3.setText("supprimer");
 
@@ -106,7 +235,7 @@ public class BailleursView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(139, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -118,7 +247,7 @@ public class BailleursView extends javax.swing.JPanel {
                 .addGap(73, 73, 73))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                .addComponent(scrll)
                 .addContainerGap())
         );
 
@@ -135,7 +264,7 @@ public class BailleursView extends javax.swing.JPanel {
                     .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                .addComponent(scrll, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -151,9 +280,8 @@ public class BailleursView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane scrll;
     private javax.swing.JTextField txtCode;
     private javax.swing.JTextField txtNom;
     // End of variables declaration//GEN-END:variables

@@ -66,19 +66,19 @@ public class BailleursView extends javax.swing.JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-//                    if (!myTable.getValueAt(myTable.getSelectedRow(), 1).toString().equals("")) {
+                    if (!myTable.getValueAt(myTable.getSelectedRow(), 1).toString().equals("")) {
 //                        bEdit.setEnabled(true);
-//                        bDelete.setEnabled(true);
-//                        txtID.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
-//                        txtDistrict.setText(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
-//                        cbProvince.setSelectedItem(myTable.getValueAt(myTable.getSelectedRow(), 2).toString());
+                        bDelete.setEnabled(true);
+                        txtCode.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
+                        txtNom.setText(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
+                        txtAdresse.setText(myTable.getValueAt(myTable.getSelectedRow(), 2).toString());
 //                        testUpdate = true;
 //                        ID_UPDATE = myTable.getValueAt(myTable.getSelectedRow(), 0).toString();
-//                    } else {
+                    } else {
 //                        bEdit.setEnabled(false);
-//                        bDelete.setEnabled(false);
+                        bDelete.setEnabled(false);
 //                        testUpdate = false;
-//                    }
+                    }
                 } catch (Exception ex) {
                 }
             }
@@ -225,6 +225,7 @@ public class BailleursView extends javax.swing.JPanel {
         scrll = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
         bSave = new javax.swing.JButton();
+        bDelete = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
 
@@ -277,6 +278,7 @@ public class BailleursView extends javax.swing.JPanel {
 
         bSave.setBackground(java.awt.Color.white);
         bSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/saveb.png"))); // NOI18N
+        bSave.setEnabled(false);
         bSave.setFocusable(false);
         bSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         bSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -286,6 +288,19 @@ public class BailleursView extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(bSave);
+
+        bDelete.setBackground(java.awt.Color.white);
+        bDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/delete.png"))); // NOI18N
+        bDelete.setEnabled(false);
+        bDelete.setFocusable(false);
+        bDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bDeleteActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(bDelete);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -328,6 +343,20 @@ public class BailleursView extends javax.swing.JPanel {
         fillDataValuesInTable();
     }//GEN-LAST:event_bSaveActionPerformed
 
+    private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Query q = em.createNamedQuery("Bailleurs.deleteBailleurByCodeAndNom");
+        q.setParameter("code", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
+        q.setParameter("nom", (myTable.getValueAt(myTable.getSelectedRow(), 1).toString()));
+        q.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+        clearTable();
+        fillDataValuesInTable();
+    }//GEN-LAST:event_bDeleteActionPerformed
+
     private void onButtonBehavior() {
         Timer temps = new Timer(20, (ActionEvent e) -> {
             if (txtCode.getText().equals("")
@@ -343,6 +372,7 @@ public class BailleursView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bDelete;
     private javax.swing.JButton bSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

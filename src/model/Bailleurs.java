@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Bailleurs.findAll", query = "SELECT b FROM Bailleurs b"),
+    @NamedQuery(name = "Bailleurs.deleteBailleurByCodeAndNom", query = "DELETE FROM Bailleurs b WHERE b.code = :code AND b.nom = :nom"),
     @NamedQuery(name = "Bailleurs.findByBailleurid", query = "SELECT b FROM Bailleurs b WHERE b.bailleurid = :bailleurid"),
     @NamedQuery(name = "Bailleurs.findByCode", query = "SELECT b FROM Bailleurs b WHERE b.code = :code"),
     @NamedQuery(name = "Bailleurs.findByNom", query = "SELECT b FROM Bailleurs b WHERE b.nom = :nom"),

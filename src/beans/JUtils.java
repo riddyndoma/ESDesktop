@@ -20,4 +20,16 @@ public class JUtils {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
     }
+
+    public static String setBlueColor(String text) {
+        return "<html><font color=" + "blue" + "><b>" + text + "</b></font></html>";
+    }
+
+    public static String setBlackColor(String text) {
+        return "<html><font color=" + "black" + "><b>" + text + "</b></font></html>";
+    }
+
+    public static String setRedColor(String text) {
+        return "<html><font color=" + "red" + "><b>" + text + "</b></font></html>";
+    }
 }

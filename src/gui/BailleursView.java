@@ -10,9 +10,11 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -35,6 +37,7 @@ public class BailleursView extends javax.swing.JPanel {
      */
     public BailleursView() {
         createModel();
+        fillDataValuesInTable();
         initComponents();
         scrll.getViewport().setBackground(Color.WHITE);
         scrll.setViewportView(myTable);
@@ -85,7 +88,7 @@ public class BailleursView extends javax.swing.JPanel {
     public class MyModelTable extends AbstractTableModel {
 
         private String[] columnNames = {
-            JUtils.setBlackColor("CODE"), JUtils.setBlackColor("NOM")};
+            JUtils.setBlackColor("CODE"), JUtils.setBlackColor("NOM"), JUtils.setBlackColor("Adresse")};
         private ArrayList[] Data;
 
         public MyModelTable(int taille) {
@@ -165,6 +168,38 @@ public class BailleursView extends javax.swing.JPanel {
             }
             this.fireTableRowsDeleted(0, Data[0].size() - 1);
         }
+    }
+
+    public static void clearTable() {
+        MyModelTable model = (MyModelTable) myTable.getModel();
+        int row = myTable.getRowCount();
+        while (row > 0) {
+            model.removeNewRow();
+            row--;
+        }
+    }
+
+    public static void fillDataValuesInTable() {
+        myTable.setEditable(true);
+
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager em = factory.createEntityManager();
+
+        Query q = em.createNamedQuery("Bailleurs.findAll");
+        List<Bailleurs> bailleursList = q.getResultList();
+        int j = 0;
+        for (Bailleurs bailleurs : bailleursList) {
+            if (j >= myTable.getModel().getRowCount()) {
+                MyModelTable model = (MyModelTable) myTable.getModel();
+                model.addNewRow();
+            }
+            myTable.setValueAt(bailleurs.getCode(), j, 0);
+            myTable.setValueAt(bailleurs.getNom(), j, 1);
+            myTable.setValueAt(bailleurs.getAdresse(), j, 2);
+            j++;
+        }
+
+        myTable.setEditable(false);
     }
 
     /**
@@ -286,8 +321,8 @@ public class BailleursView extends javax.swing.JPanel {
         em.persist(bls);
         em.getTransaction().commit();
         em.close();
-
-
+        clearTable();
+        fillDataValuesInTable();
     }//GEN-LAST:event_bSaveActionPerformed
 
 

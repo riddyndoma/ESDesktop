@@ -16,6 +16,7 @@ public class Launcher {
      */
     public static void main(String[] args) {
          new SplashScreen(null, true).setVisible(true);
+         new SplashScreen(null, true).setLocationRelativeTo(null);
     }
     
 }

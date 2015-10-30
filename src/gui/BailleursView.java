@@ -226,6 +226,7 @@ public class BailleursView extends javax.swing.JPanel {
         jToolBar1 = new javax.swing.JToolBar();
         bSave = new javax.swing.JButton();
         bDelete = new javax.swing.JButton();
+        bUpdate = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
 
@@ -302,6 +303,18 @@ public class BailleursView extends javax.swing.JPanel {
         });
         jToolBar1.add(bDelete);
 
+        bUpdate.setBackground(java.awt.Color.white);
+        bUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/edit_g.png"))); // NOI18N
+        bUpdate.setFocusable(false);
+        bUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bUpdate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bUpdateActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(bUpdate);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -347,7 +360,7 @@ public class BailleursView extends javax.swing.JPanel {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        Query q = em.createNamedQuery("Bailleurs.deleteBailleurByCodeAndNom");
+        Query q = em.createNamedQuery("Bailleurs.deleteByCodeAndNom");
         q.setParameter("code", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
         q.setParameter("nom", (myTable.getValueAt(myTable.getSelectedRow(), 1).toString()));
         q.executeUpdate();
@@ -356,6 +369,22 @@ public class BailleursView extends javax.swing.JPanel {
         clearTable();
         fillDataValuesInTable();
     }//GEN-LAST:event_bDeleteActionPerformed
+
+    private void bUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateActionPerformed
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Query q = em.createNamedQuery("Bailleurs.update");
+        q.setParameter("code", txtCode.getText());
+        q.setParameter("nom", txtNom.getText());
+        q.setParameter("adresse", txtAdresse.getText());
+        q.setParameter("codeKey", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
+        q.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+        clearTable();
+        fillDataValuesInTable();
+    }//GEN-LAST:event_bUpdateActionPerformed
 
     private void onButtonBehavior() {
         Timer temps = new Timer(20, (ActionEvent e) -> {
@@ -374,6 +403,7 @@ public class BailleursView extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDelete;
     private javax.swing.JButton bSave;
+    private javax.swing.JButton bUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

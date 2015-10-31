@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
@@ -33,6 +34,7 @@ public class BailleursView extends javax.swing.JPanel {
     static JXTable myTable;
     private static final String PERSISTENCE_UNIT_NAME = "ESDeskAppPU";
     private static EntityManagerFactory factory;
+    boolean testUpdate = false;// State of edit button
 
     /**
      * Creates new form BailleursView
@@ -67,17 +69,16 @@ public class BailleursView extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 try {
                     if (!myTable.getValueAt(myTable.getSelectedRow(), 1).toString().equals("")) {
-//                        bEdit.setEnabled(true);
+                        bEdit.setEnabled(true);
                         bDelete.setEnabled(true);
                         txtCode.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
                         txtNom.setText(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
                         txtAdresse.setText(myTable.getValueAt(myTable.getSelectedRow(), 2).toString());
-//                        testUpdate = true;
-//                        ID_UPDATE = myTable.getValueAt(myTable.getSelectedRow(), 0).toString();
+                        testUpdate = true;
                     } else {
-//                        bEdit.setEnabled(false);
+                        bEdit.setEnabled(false);
                         bDelete.setEnabled(false);
-//                        testUpdate = false;
+                        testUpdate = false;
                     }
                 } catch (Exception ex) {
                 }
@@ -90,9 +91,9 @@ public class BailleursView extends javax.swing.JPanel {
 
     public class MyModelTable extends AbstractTableModel {
 
-        private String[] columnNames = {
+        private final String[] columnNames = {
             JUtils.setBlackColor("CODE"), JUtils.setBlackColor("NOM"), JUtils.setBlackColor("Adresse")};
-        private ArrayList[] Data;
+        private final ArrayList[] Data;
 
         public MyModelTable(int taille) {
 
@@ -182,6 +183,29 @@ public class BailleursView extends javax.swing.JPanel {
         }
     }
 
+    public void refresh() {
+        txtCode.setText("");
+        txtNom.setText("");
+        txtAdresse.setText("");
+        testUpdate = false;
+        BailleursView.clearTable();
+        BailleursView.fillDataValuesInTable();
+        stateEditButtonOnTable();
+    }
+
+    private void stateEditButtonOnTable() {
+        int comp = 0;
+        for (int i = 0; i < myTable.getRowCount(); i++) {
+            if (myTable.isRowSelected(i) == false) {
+                comp++;
+            }
+        }
+        if (comp == myTable.getRowCount()) {
+            bEdit.setEnabled(false);
+            bDelete.setEnabled(false);
+        }
+    }
+
     public static void fillDataValuesInTable() {
         myTable.setEditable(true);
 
@@ -225,8 +249,10 @@ public class BailleursView extends javax.swing.JPanel {
         scrll = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
         bSave = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        bActualize = new javax.swing.JButton();
         bDelete = new javax.swing.JButton();
-        bUpdate = new javax.swing.JButton();
+        bEdit = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
 
@@ -289,6 +315,18 @@ public class BailleursView extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(bSave);
+        jToolBar1.add(jSeparator1);
+
+        bActualize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/refresh.png"))); // NOI18N
+        bActualize.setFocusable(false);
+        bActualize.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bActualize.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bActualize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bActualizeActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(bActualize);
 
         bDelete.setBackground(java.awt.Color.white);
         bDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/delete.png"))); // NOI18N
@@ -303,17 +341,17 @@ public class BailleursView extends javax.swing.JPanel {
         });
         jToolBar1.add(bDelete);
 
-        bUpdate.setBackground(java.awt.Color.white);
-        bUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/edit_g.png"))); // NOI18N
-        bUpdate.setFocusable(false);
-        bUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        bUpdate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        bUpdate.addActionListener(new java.awt.event.ActionListener() {
+        bEdit.setBackground(java.awt.Color.white);
+        bEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/edit_g.png"))); // NOI18N
+        bEdit.setFocusable(false);
+        bEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bUpdateActionPerformed(evt);
+                bEditActionPerformed(evt);
             }
         });
-        jToolBar1.add(bUpdate);
+        jToolBar1.add(bEdit);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -354,6 +392,8 @@ public class BailleursView extends javax.swing.JPanel {
         em.close();
         clearTable();
         fillDataValuesInTable();
+        JOptionPane.showMessageDialog(this, "Enregistrement effectué !");
+        refresh();
     }//GEN-LAST:event_bSaveActionPerformed
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
@@ -368,9 +408,11 @@ public class BailleursView extends javax.swing.JPanel {
         em.close();
         clearTable();
         fillDataValuesInTable();
+        JOptionPane.showMessageDialog(this, "Suppression effectuée !");
+        refresh();
     }//GEN-LAST:event_bDeleteActionPerformed
 
-    private void bUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateActionPerformed
+    private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
@@ -384,13 +426,20 @@ public class BailleursView extends javax.swing.JPanel {
         em.close();
         clearTable();
         fillDataValuesInTable();
-    }//GEN-LAST:event_bUpdateActionPerformed
+        JOptionPane.showMessageDialog(this, "Mise à jour effectuée !");
+        refresh();
+    }//GEN-LAST:event_bEditActionPerformed
+
+    private void bActualizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bActualizeActionPerformed
+        refresh();
+    }//GEN-LAST:event_bActualizeActionPerformed
 
     private void onButtonBehavior() {
         Timer temps = new Timer(20, (ActionEvent e) -> {
             if (txtCode.getText().equals("")
                     || txtNom.getText().equals("")
-                    || txtAdresse.getText().equals("")) {
+                    || txtAdresse.getText().equals("")
+                    || testUpdate == true) {
                 bSave.setEnabled(false);
             } else {
                 bSave.setEnabled(true);
@@ -401,13 +450,15 @@ public class BailleursView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bActualize;
     private javax.swing.JButton bDelete;
+    private javax.swing.JButton bEdit;
     private javax.swing.JButton bSave;
-    private javax.swing.JButton bUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JScrollPane scrll;

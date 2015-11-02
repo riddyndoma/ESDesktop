@@ -29,11 +29,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Bailleurs.findAll", query = "SELECT b FROM Bailleurs b"),
+    @NamedQuery(name = "Bailleurs.update", query = "UPDATE Bailleurs b SET b.code = :code, b.nom = :nom, b.adresse = :adresse WHERE b.code = :codeKey"),
+    @NamedQuery(name = "Bailleurs.deleteByCodeAndNom", query = "DELETE FROM Bailleurs b WHERE b.code = :code AND b.nom = :nom"),
     @NamedQuery(name = "Bailleurs.findByBailleurid", query = "SELECT b FROM Bailleurs b WHERE b.bailleurid = :bailleurid"),
     @NamedQuery(name = "Bailleurs.findByCode", query = "SELECT b FROM Bailleurs b WHERE b.code = :code"),
     @NamedQuery(name = "Bailleurs.findByNom", query = "SELECT b FROM Bailleurs b WHERE b.nom = :nom"),
     @NamedQuery(name = "Bailleurs.findByAdresse", query = "SELECT b FROM Bailleurs b WHERE b.adresse = :adresse")})
 public class Bailleurs implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,5 +124,5 @@ public class Bailleurs implements Serializable {
     public String toString() {
         return "model.Bailleurs[ bailleurid=" + bailleurid + " ]";
     }
-    
+
 }

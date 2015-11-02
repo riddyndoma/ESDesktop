@@ -29,9 +29,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Type.findAll", query = "SELECT t FROM Type t"),
+    @NamedQuery(name = "Type.update", query = "UPDATE Type t SET t.libelle = :libelle  WHERE t.libelle = :libelleKey"),
+    @NamedQuery(name = "Type.delete", query = "DELETE FROM Type t WHERE t.libelle = :libelle"),
     @NamedQuery(name = "Type.findByTypeid", query = "SELECT t FROM Type t WHERE t.typeid = :typeid"),
     @NamedQuery(name = "Type.findByLibelle", query = "SELECT t FROM Type t WHERE t.libelle = :libelle")})
 public class Type implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,5 +102,5 @@ public class Type implements Serializable {
     public String toString() {
         return "model.Type[ typeid=" + typeid + " ]";
     }
-    
+
 }

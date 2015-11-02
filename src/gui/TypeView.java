@@ -22,14 +22,14 @@ import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import model.Bailleurs;
+import model.Type;
 import org.jdesktop.swingx.JXTable;
 
 /**
  *
  * @author Dell
  */
-public class BailleursView extends javax.swing.JPanel {
+public class TypeView extends javax.swing.JPanel {
 
     static JXTable myTable;
     private static final String PERSISTENCE_UNIT_NAME = "ESDeskAppPU";
@@ -39,7 +39,7 @@ public class BailleursView extends javax.swing.JPanel {
     /**
      * Creates new form BailleursView
      */
-    public BailleursView() {
+    public TypeView() {
         createModel();
         fillDataValuesInTable();
         initComponents();
@@ -54,8 +54,7 @@ public class BailleursView extends javax.swing.JPanel {
         myTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         myTable.setShowGrid(false);
         myTable.getColumnModel().getColumn(0).setMinWidth(100);
-        myTable.getColumnModel().getColumn(0).setMaxWidth(100);
-        myTable.getColumnModel().getColumn(1).setMinWidth(100);
+//        myTable.getColumnModel().getColumn(0).setMaxWidth(100);
         myTable.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -68,12 +67,10 @@ public class BailleursView extends javax.swing.JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    if (!myTable.getValueAt(myTable.getSelectedRow(), 1).toString().equals("")) {
+                    if (!myTable.getValueAt(myTable.getSelectedRow(), 0).toString().equals("")) {
                         bEdit.setEnabled(true);
                         bDelete.setEnabled(true);
-                        txtCode.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
-                        txtNom.setText(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
-                        txtAdresse.setText(myTable.getValueAt(myTable.getSelectedRow(), 2).toString());
+                        txtType.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
                         testUpdate = true;
                     } else {
                         bEdit.setEnabled(false);
@@ -91,8 +88,7 @@ public class BailleursView extends javax.swing.JPanel {
 
     public class MyModelTable extends AbstractTableModel {
 
-        private final String[] columnNames = {
-            JUtils.setBlackColor("CODE"), JUtils.setBlackColor("NOM"), JUtils.setBlackColor("Adresse")};
+        private final String[] columnNames = {JUtils.setBlackColor("NOM")};
         private final ArrayList[] Data;
 
         public MyModelTable(int taille) {
@@ -184,12 +180,10 @@ public class BailleursView extends javax.swing.JPanel {
     }
 
     public void refresh() {
-        txtCode.setText("");
-        txtNom.setText("");
-        txtAdresse.setText("");
+        txtType.setText("");
         testUpdate = false;
-        BailleursView.clearTable();
-        BailleursView.fillDataValuesInTable();
+        TypeView.clearTable();
+        TypeView.fillDataValuesInTable();
         stateEditButtonOnTable();
     }
 
@@ -212,17 +206,15 @@ public class BailleursView extends javax.swing.JPanel {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
 
-        Query q = em.createNamedQuery("Bailleurs.findAll");
-        List<Bailleurs> bailleursList = q.getResultList();
+        Query q = em.createNamedQuery("Type.findAll");
+        List<Type> typeList = q.getResultList();
         int j = 0;
-        for (Bailleurs bailleurs : bailleursList) {
+        for (Type type : typeList) {
             if (j >= myTable.getModel().getRowCount()) {
                 MyModelTable model = (MyModelTable) myTable.getModel();
                 model.addNewRow();
             }
-            myTable.setValueAt(bailleurs.getCode(), j, 0);
-            myTable.setValueAt(bailleurs.getNom(), j, 1);
-            myTable.setValueAt(bailleurs.getAdresse(), j, 2);
+            myTable.setValueAt(type.getLibelle(), j, 0);
             j++;
         }
 
@@ -241,11 +233,7 @@ public class BailleursView extends javax.swing.JPanel {
         jSpinner1 = new javax.swing.JSpinner();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtCode = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtNom = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        txtAdresse = new javax.swing.JTextField();
+        txtType = new javax.swing.JTextField();
         scrll = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
         bSave = new javax.swing.JButton();
@@ -259,11 +247,7 @@ public class BailleursView extends javax.swing.JPanel {
         jPanel1.setBackground(java.awt.Color.white);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel1.setText("Code");
-
-        jLabel2.setText("Nom");
-
-        jLabel3.setText("Adresse");
+        jLabel1.setText("Type");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -271,15 +255,9 @@ public class BailleursView extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNom, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
-                    .addComponent(txtCode)
-                    .addComponent(txtAdresse, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addGap(33, 33, 33)
+                .addComponent(txtType)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -288,16 +266,8 @@ public class BailleursView extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtAdresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(txtType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jToolBar1.setBackground(java.awt.Color.white);
@@ -363,7 +333,7 @@ public class BailleursView extends javax.swing.JPanel {
                 .addGap(73, 73, 73))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrll)
+                .addComponent(scrll, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -373,21 +343,19 @@ public class BailleursView extends javax.swing.JPanel {
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(scrll, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrll, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void bSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSaveActionPerformed
-        Bailleurs bls = new Bailleurs();
-        bls.setCode(txtCode.getText());
-        bls.setAdresse(txtAdresse.getText());
-        bls.setNom(txtNom.getText());
+        Type tp = new Type();
+        tp.setLibelle(txtType.getText());
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        em.persist(bls);
+        em.persist(tp);
         em.getTransaction().commit();
         em.close();
         clearTable();
@@ -400,9 +368,8 @@ public class BailleursView extends javax.swing.JPanel {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        Query q = em.createNamedQuery("Bailleurs.deleteByCodeAndNom");
-        q.setParameter("code", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
-        q.setParameter("nom", (myTable.getValueAt(myTable.getSelectedRow(), 1).toString()));
+        Query q = em.createNamedQuery("Type.delete");
+        q.setParameter("libelle", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
         q.executeUpdate();
         em.getTransaction().commit();
         em.close();
@@ -416,11 +383,9 @@ public class BailleursView extends javax.swing.JPanel {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        Query q = em.createNamedQuery("Bailleurs.update");
-        q.setParameter("code", txtCode.getText());
-        q.setParameter("nom", txtNom.getText());
-        q.setParameter("adresse", txtAdresse.getText());
-        q.setParameter("codeKey", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
+        Query q = em.createNamedQuery("Type.update");
+        q.setParameter("libelle", txtType.getText());
+        q.setParameter("libelleKey", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
         q.executeUpdate();
         em.getTransaction().commit();
         em.close();
@@ -436,9 +401,7 @@ public class BailleursView extends javax.swing.JPanel {
 
     private void onButtonBehavior() {
         Timer temps = new Timer(20, (ActionEvent e) -> {
-            if (txtCode.getText().equals("")
-                    || txtNom.getText().equals("")
-                    || txtAdresse.getText().equals("")
+            if (txtType.getText().equals("")
                     || testUpdate == true) {
                 bSave.setEnabled(false);
             } else {
@@ -455,15 +418,11 @@ public class BailleursView extends javax.swing.JPanel {
     private javax.swing.JButton bEdit;
     private javax.swing.JButton bSave;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JScrollPane scrll;
-    private javax.swing.JTextField txtAdresse;
-    private javax.swing.JTextField txtCode;
-    private javax.swing.JTextField txtNom;
+    private javax.swing.JTextField txtType;
     // End of variables declaration//GEN-END:variables
 }

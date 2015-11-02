@@ -39,8 +39,10 @@ public class SplashScreen extends javax.swing.JDialog {
     public void end() {
         t.stop();
         this.dispose();
-        ESDeskView esDeskView = new ESDeskView("admin");
-        esDeskView.setVisible(true);
+        Authentified authentified = new Authentified();
+        authentified.setVisible(true);
+        //ESDeskView esDeskView = new ESDeskView("admin");
+        //esDeskView.setVisible(true);
     }
 
     /**
@@ -82,6 +84,7 @@ public class SplashScreen extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXPanel paneau;

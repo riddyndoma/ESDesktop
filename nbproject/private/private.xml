@@ -2,14 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/C:/Users/Dell/Documents/NetBeansProjects/ESDeskApp/src/gui/BailleursView.java</file>
-            <file>file:/C:/Users/Dell/Documents/NetBeansProjects/ESDeskApp/src/model/Bailleurs.java</file>
-            <file>file:/C:/Users/Dell/Documents/NetBeansProjects/ESDeskApp/src/beans/Test.java</file>
+            <file>file:/D:/Application_3/ESDesktop/src/gui/ESDeskView.java</file>
+            <file>file:/D:/Application_3/ESDesktop/src/gui/SplashScreen.java</file>
+            <file>file:/D:/Application_3/ESDesktop/src/gui/Authentified.java</file>
+            <file>file:/D:/Application_3/ESDesktop/src/beans/JUtils.java</file>
+            <file>file:/D:/Application_3/ESDesktop/src/gui/BailleursView.java</file>
+            <file>file:/D:/Application_3/ESDesktop/src/gui/Launcher.java</file>
         </group>
->>>>>>> 202b440166b8c93fc4639277eeac552181872b4b
     </open-files>
 </project-private>

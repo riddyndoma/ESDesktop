@@ -13,6 +13,7 @@ public class SplashScreen extends javax.swing.JDialog {
 
     /**
      * Creates new form Splash
+     *
      * @param parent
      * @param modal
      */
@@ -39,10 +40,9 @@ public class SplashScreen extends javax.swing.JDialog {
     public void end() {
         t.stop();
         this.dispose();
-        Authentified authentified = new Authentified();
-        authentified.setVisible(true);
-        //ESDeskView esDeskView = new ESDeskView("admin");
-        //esDeskView.setVisible(true);
+//        Authentified authentified = new Authentified();
+//        authentified.setVisible(true);
+        ESDeskView.getInstance("admin").setVisible(true); 
     }
 
     /**

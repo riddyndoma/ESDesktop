@@ -29,18 +29,18 @@ public class Metadata extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         panMetadata = new javax.swing.JScrollPane();
-        jButton1 = new javax.swing.JButton();
+        bBailleurs = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        bType = new javax.swing.JButton();
+        bTypeActivités = new javax.swing.JButton();
 
         jPanel1.setBackground(java.awt.Color.white);
 
-        jButton1.setBackground(java.awt.Color.white);
-        jButton1.setText("Bailleurs");
-        jButton1.setFocusable(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bBailleurs.setBackground(java.awt.Color.white);
+        bBailleurs.setText("Bailleurs");
+        bBailleurs.setFocusable(false);
+        bBailleurs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bBailleursActionPerformed(evt);
             }
         });
 
@@ -53,12 +53,12 @@ public class Metadata extends javax.swing.JPanel {
             }
         });
 
-        bType.setBackground(java.awt.Color.white);
-        bType.setText("Type activité");
-        bType.setFocusable(false);
-        bType.addActionListener(new java.awt.event.ActionListener() {
+        bTypeActivités.setBackground(java.awt.Color.white);
+        bTypeActivités.setText("Type activité");
+        bTypeActivités.setFocusable(false);
+        bTypeActivités.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bTypeActionPerformed(evt);
+                bTypeActivitésActionPerformed(evt);
             }
         });
 
@@ -69,8 +69,8 @@ public class Metadata extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bBailleurs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bTypeActivités, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(7, 7, 7)
                 .addComponent(panMetadata, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
@@ -83,9 +83,9 @@ public class Metadata extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panMetadata, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(bBailleurs)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bType)
+                        .addComponent(bTypeActivités)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)))
                 .addContainerGap())
@@ -103,22 +103,22 @@ public class Metadata extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bBailleursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBailleursActionPerformed
         panMetadata.setViewportView(new BailleursView());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bBailleursActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        panMetadata.setViewportView(new ActivityView());
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void bTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTypeActionPerformed
+    private void bTypeActivitésActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTypeActivitésActionPerformed
          panMetadata.setViewportView(new TypeView());
-    }//GEN-LAST:event_bTypeActionPerformed
+    }//GEN-LAST:event_bTypeActivitésActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bType;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bBailleurs;
+    private javax.swing.JButton bTypeActivités;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane panMetadata;

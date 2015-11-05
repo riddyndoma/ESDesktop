@@ -30,7 +30,7 @@ public class Metadata extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         panMetadata = new javax.swing.JScrollPane();
         bBailleurs = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        bDepense = new javax.swing.JButton();
         bTypeActivités = new javax.swing.JButton();
 
         jPanel1.setBackground(java.awt.Color.white);
@@ -44,17 +44,17 @@ public class Metadata extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setBackground(java.awt.Color.white);
-        jButton2.setText("Sorties");
-        jButton2.setFocusable(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bDepense.setBackground(java.awt.Color.white);
+        bDepense.setText("Dépenses");
+        bDepense.setFocusable(false);
+        bDepense.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bDepenseActionPerformed(evt);
             }
         });
 
         bTypeActivités.setBackground(java.awt.Color.white);
-        bTypeActivités.setText("Type activité");
+        bTypeActivités.setText("Type dépenses");
         bTypeActivités.setFocusable(false);
         bTypeActivités.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,9 +71,9 @@ public class Metadata extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bBailleurs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bTypeActivités, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bDepense, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(7, 7, 7)
-                .addComponent(panMetadata, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(panMetadata, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -87,7 +87,7 @@ public class Metadata extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bTypeActivités)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(bDepense)))
                 .addContainerGap())
         );
 
@@ -107,9 +107,9 @@ public class Metadata extends javax.swing.JPanel {
         panMetadata.setViewportView(new BailleursView());
     }//GEN-LAST:event_bBailleursActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       panMetadata.setViewportView(new ActivityView());
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void bDepenseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDepenseActionPerformed
+       panMetadata.setViewportView(new DepenseView());
+    }//GEN-LAST:event_bDepenseActionPerformed
 
     private void bTypeActivitésActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTypeActivitésActionPerformed
          panMetadata.setViewportView(new TypeView());
@@ -118,8 +118,8 @@ public class Metadata extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bBailleurs;
+    private javax.swing.JButton bDepense;
     private javax.swing.JButton bTypeActivités;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane panMetadata;
     // End of variables declaration//GEN-END:variables

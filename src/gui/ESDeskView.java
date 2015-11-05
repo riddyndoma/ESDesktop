@@ -86,7 +86,7 @@ public class ESDeskView extends javax.swing.JFrame implements Serializable {
 
         jButton2.setBackground(java.awt.Color.white);
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/fleche-gauche-icone-8319-32.png"))); // NOI18N
-        jButton2.setText("Depenses");
+        jButton2.setText("Depenser");
         jButton2.setFocusable(false);
 
         bMetadata.setBackground(java.awt.Color.white);

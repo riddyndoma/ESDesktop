@@ -36,9 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Entree.findAll", query = "SELECT e FROM Entree e"),
     @NamedQuery(name = "Entree.findByEntreeid", query = "SELECT e FROM Entree e WHERE e.entreeid = :entreeid"),
     @NamedQuery(name = "Entree.findByLibelle", query = "SELECT e FROM Entree e WHERE e.libelle = :libelle"),
+    @NamedQuery(name = "Entree.deleteByLibelleAndMontant", query = "DELETE FROM Entree e WHERE e.libelle = :libelle AND e.montant = :montant"),
     @NamedQuery(name = "Entree.findByMontant", query = "SELECT e FROM Entree e WHERE e.montant = :montant"),
     @NamedQuery(name = "Entree.findByDateentree", query = "SELECT e FROM Entree e WHERE e.dateentree = :dateentree")})
 public class Entree implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,5 +141,5 @@ public class Entree implements Serializable {
     public String toString() {
         return "model.Entree[ entreeid=" + entreeid + " ]";
     }
-    
+
 }

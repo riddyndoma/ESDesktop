@@ -75,6 +75,7 @@ public final class DepenseView extends javax.swing.JPanel {
                         bEdit.setEnabled(true);
                         bDelete.setEnabled(true);
                         txtLibelle.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
+                        cbType.setSelectedItem(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
                         testUpdate = true;
                     } else {
                         bEdit.setEnabled(false);

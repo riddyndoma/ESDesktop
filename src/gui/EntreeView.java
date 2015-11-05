@@ -25,7 +25,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import model.Bailleurs;
 import model.Entree;
-import model.Type;
 import org.jdesktop.swingx.JXTable;
 
 /**
@@ -33,7 +32,7 @@ import org.jdesktop.swingx.JXTable;
  * @author Dell
  */
 public final class EntreeView extends javax.swing.JPanel {
-
+    
     static JXTable myTable;
     private static final String PERSISTENCE_UNIT_NAME = "ESDeskAppPU";
     private static EntityManagerFactory factory;
@@ -45,7 +44,7 @@ public final class EntreeView extends javax.swing.JPanel {
      */
     public EntreeView() {
         createModel();
-
+        
         EntreeView.fillDataValuesInTable();
         initComponents();
         this.getAllItemsType();
@@ -53,7 +52,7 @@ public final class EntreeView extends javax.swing.JPanel {
         scrll.getViewport().setBackground(Color.WHITE);
         scrll.setViewportView(myTable);
     }
-
+    
     private void createModel() {
         myTable = new JXTable(new MyModelTable(1));
         myTable.getTableHeader().setReorderingAllowed(false);
@@ -62,14 +61,14 @@ public final class EntreeView extends javax.swing.JPanel {
         myTable.getColumnModel().getColumn(0).setMinWidth(100);
 //        myTable.getColumnModel().getColumn(0).setMaxWidth(100);
         myTable.addMouseListener(new MouseAdapter() {
-
+            
             @Override
             public void mouseReleased(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
 //                    pop.show(table, evt.getX(), evt.getY());
                 }
             }
-
+            
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
@@ -77,6 +76,9 @@ public final class EntreeView extends javax.swing.JPanel {
                         bEdit.setEnabled(true);
                         bDelete.setEnabled(true);
                         txtLibelle.setText(myTable.getValueAt(myTable.getSelectedRow(), 0).toString());
+                        txtMontant.setText(myTable.getValueAt(myTable.getSelectedRow(), 1).toString());
+                        cbBailleurs.setSelectedItem(myTable.getValueAt(myTable.getSelectedRow(), 3).toString());
+                        dcDateEntree.setDate(new Date(myTable.getValueAt(myTable.getSelectedRow(), 2).toString())); 
                         testUpdate = true;
                     } else {
                         bEdit.setEnabled(false);
@@ -89,73 +91,72 @@ public final class EntreeView extends javax.swing.JPanel {
         });
         TableCellRenderer headerRenderer = myTable.getTableHeader().getDefaultRenderer();
         ((DefaultTableCellRenderer) headerRenderer).setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
-
+        
     }
-
+    
     public class MyModelTable extends AbstractTableModel {
-
-        private final String[] columnNames = {JUtils.setBlackColor("LIBELLE"), JUtils.setBlackColor("MONTANT")
-        , JUtils.setBlackColor("DATE"),JUtils.setBlackColor("BAILLEURS")};
+        
+        private final String[] columnNames = {JUtils.setBlackColor("LIBELLE"), JUtils.setBlackColor("MONTANT"), JUtils.setBlackColor("DATE"), JUtils.setBlackColor("BAILLEURS")};
         private final ArrayList[] Data;
-
+        
         public MyModelTable(int taille) {
-
+            
             Data = new ArrayList[columnNames.length];
             for (int i = 0; i < columnNames.length; i++) {
                 Data[i] = new ArrayList();
-
+                
             }
             for (int i = 0; i < columnNames.length; i++) {
                 for (int j = 0; j < taille; j++) {
                     Data[i].add(j, "");
-
+                    
                 }
             }
         }
-
+        
         @Override
         public int getColumnCount() {
             return columnNames.length;
         }
-
+        
         @Override
         public int getRowCount() {
             return Data[0].size();
         }
-
+        
         @Override
         public String getColumnName(int col) {
             return columnNames[col];
         }
-
+        
         @Override
         public Object getValueAt(int row, int col) {
             return Data[col].get(row);
         }
-
+        
         @Override
         public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
-
+        
         @Override
         public boolean isCellEditable(int row, int col) {
             return (true);
         }
-
+        
         @Override
         public void setValueAt(Object value, int row, int col) {
             Data[col].set(row, value);
             fireTableCellUpdated(row, col);
         }
-
+        
         public void addNewRow() {
             for (int i = 0; i < columnNames.length; i++) {
                 Data[i].add(Data[i].size(), "");
             }
             this.fireTableRowsInserted(0, Data[0].size() - 1);
         }
-
+        
         public void removeNewRow(int index) {
             if (getRowCount() == 0 || index < 0) {
                 return;
@@ -168,7 +169,7 @@ public final class EntreeView extends javax.swing.JPanel {
             }
             this.fireTableRowsDeleted(0, Data[0].size() - 1);
         }
-
+        
         public void removeNewRow() {
             for (int i = 0; i < columnNames.length; i++) {
                 Data[i].remove(Data[i].size() - 1);
@@ -176,7 +177,7 @@ public final class EntreeView extends javax.swing.JPanel {
             this.fireTableRowsDeleted(0, Data[0].size() - 1);
         }
     }
-
+    
     public static void clearTable() {
         MyModelTable model = (MyModelTable) myTable.getModel();
         int row = myTable.getRowCount();
@@ -185,15 +186,17 @@ public final class EntreeView extends javax.swing.JPanel {
             row--;
         }
     }
-
+    
     public void refresh() {
         txtLibelle.setText("");
+        txtMontant.setText("");
+        cbBailleurs.setSelectedIndex(-1); 
         testUpdate = false;
         EntreeView.clearTable();
         EntreeView.fillDataValuesInTable();
         stateEditButtonOnTable();
     }
-
+    
     private void stateEditButtonOnTable() {
         int comp = 0;
         for (int i = 0; i < myTable.getRowCount(); i++) {
@@ -206,11 +209,11 @@ public final class EntreeView extends javax.swing.JPanel {
             bDelete.setEnabled(false);
         }
     }
-
+    
     public void getAllItemsType() {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
-
+        
         Query q = em.createNamedQuery("Bailleurs.findAll");
         bailleurList = q.getResultList();
         bailleurList.stream().forEach((bailleurList1) -> {
@@ -218,13 +221,13 @@ public final class EntreeView extends javax.swing.JPanel {
         });
         cbBailleurs.setSelectedIndex(-1);
     }
-
+    
     public static void fillDataValuesInTable() {
         myTable.setEditable(true);
-
+        
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
-
+        
         Query q = em.createNamedQuery("Entree.findAll");
         List<Entree> entreeList = q.getResultList();
         int j = 0;
@@ -237,10 +240,10 @@ public final class EntreeView extends javax.swing.JPanel {
             myTable.setValueAt(entree.getMontant(), j, 1);
             myTable.setValueAt(entree.getDateentree(), j, 2);
             myTable.setValueAt(entree.getBailleurid().getNom(), j, 3);
-
+            
             j++;
         }
-
+        
         myTable.setEditable(false);
     }
 
@@ -262,6 +265,7 @@ public final class EntreeView extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtMontant = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        dcDateEntree = new com.toedter.calendar.JDateChooser();
         scrll = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
         bSave = new javax.swing.JButton();
@@ -298,7 +302,8 @@ public final class EntreeView extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtLibelle, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                     .addComponent(cbBailleurs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtMontant, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
+                    .addComponent(txtMontant, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                    .addComponent(dcDateEntree, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -313,7 +318,9 @@ public final class EntreeView extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(txtMontant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(dcDateEntree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -395,7 +402,7 @@ public final class EntreeView extends javax.swing.JPanel {
                 .addGap(23, 23, 23)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(scrll, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                .addComponent(scrll, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -404,18 +411,17 @@ public final class EntreeView extends javax.swing.JPanel {
         Entree entree = new Entree();
         entree.setLibelle(txtLibelle.getText());
         entree.setMontant(Double.valueOf(txtMontant.getText()));
-        entree.setDateentree(new Date());
-
+        entree.setDateentree(dcDateEntree.getDate());        
+        
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-
+        
         Query q = em.createNamedQuery("Bailleurs.findByNom");
         q.setParameter("nom", cbBailleurs.getSelectedItem().toString());
         Bailleurs bl = (Bailleurs) q.getSingleResult();
-        System.out.println(bl.getBailleurid());
         entree.setBailleurid(bl);
-
+        
         em.persist(entree);
         em.getTransaction().commit();
         em.close();
@@ -429,8 +435,9 @@ public final class EntreeView extends javax.swing.JPanel {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        Query q = em.createNamedQuery("entreefd.delete");
+        Query q = em.createNamedQuery("Entree.deleteByLibelleAndMontant");
         q.setParameter("libelle", (myTable.getValueAt(myTable.getSelectedRow(), 0).toString()));
+        q.setParameter("montant", Double.parseDouble((myTable.getValueAt(myTable.getSelectedRow(), 1).toString())));
         q.executeUpdate();
         em.getTransaction().commit();
         em.close();
@@ -459,7 +466,7 @@ public final class EntreeView extends javax.swing.JPanel {
     private void bActualizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bActualizeActionPerformed
         refresh();
     }//GEN-LAST:event_bActualizeActionPerformed
-
+    
     private void onButtonBehavior() {
         Timer temps = new Timer(20, (ActionEvent e) -> {
             if (txtLibelle.getText().equals("")
@@ -479,6 +486,7 @@ public final class EntreeView extends javax.swing.JPanel {
     private javax.swing.JButton bEdit;
     private javax.swing.JButton bSave;
     private javax.swing.JComboBox cbBailleurs;
+    private com.toedter.calendar.JDateChooser dcDateEntree;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

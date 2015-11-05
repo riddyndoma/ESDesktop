@@ -61,7 +61,7 @@ public class ESDeskView extends javax.swing.JFrame implements Serializable {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        bEntreeFond = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         bMetadata = new javax.swing.JButton();
         bAdmin = new javax.swing.JButton();
@@ -74,13 +74,13 @@ public class ESDeskView extends javax.swing.JFrame implements Serializable {
         jPanel2.setBackground(java.awt.Color.white);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jButton1.setBackground(java.awt.Color.white);
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/dossier-icone-5458-32.png"))); // NOI18N
-        jButton1.setText("Entrée fond");
-        jButton1.setFocusable(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bEntreeFond.setBackground(java.awt.Color.white);
+        bEntreeFond.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/dossier-icone-5458-32.png"))); // NOI18N
+        bEntreeFond.setText("Entrée fond");
+        bEntreeFond.setFocusable(false);
+        bEntreeFond.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bEntreeFondActionPerformed(evt);
             }
         });
 
@@ -111,7 +111,7 @@ public class ESDeskView extends javax.swing.JFrame implements Serializable {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bEntreeFond, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bMetadata, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -121,7 +121,7 @@ public class ESDeskView extends javax.swing.JFrame implements Serializable {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bEntreeFond, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -172,15 +172,15 @@ public class ESDeskView extends javax.swing.JFrame implements Serializable {
         panCentral.setViewportView(new Metadata());
     }//GEN-LAST:event_bMetadataActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void bEntreeFondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEntreeFondActionPerformed
+       panCentral.setViewportView(new EntreeView());
+    }//GEN-LAST:event_bEntreeFondActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAdmin;
+    private javax.swing.JButton bEntreeFond;
     private javax.swing.JButton bMetadata;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
